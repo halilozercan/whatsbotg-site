@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsbotg — İndir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --muted-text-color: #a0a0a0;
+            --primary-color: #007bff;
+            --secondary-color: #28a745;
+            --natural-turquoise-color: #40E0D0;
+            --code-bg: #2a2a2a;
+            --card-bg: #232323;
+            --border-color: #444;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 60px 20px 80px;
+            line-height: 1.6;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.6em;
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--muted-text-color);
+            margin-bottom: 45px;
+        }
+
+        .download-card {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 45px;
+        }
+
+        .download-card .platform {
+            font-size: 1.1em;
+            color: var(--natural-turquoise-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 40px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.2em;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .download-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        .secondary-link {
+            display: block;
+            margin-top: 18px;
+            color: var(--muted-text-color);
+            font-size: 0.9em;
+            text-decoration: none;
+        }
+
+        .secondary-link:hover {
+            color: var(--text-color);
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        code {
+            font-family: "Fira Code", "Courier New", Courier, monospace;
+            background-color: var(--code-bg);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        ul {
+            color: var(--text-color);
+        }
+
+        .note {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px 20px;
+            color: var(--muted-text-color);
+            font-size: 0.95em;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 50px;
+            color: var(--muted-text-color);
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: var(--natural-turquoise-color);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Whatsbotg'u İndirin</h1>
+        <p class="subtitle">En güncel Windows sürümünü tek tıkla indirin.</p>
+
+        <div class="download-card">
+            <div class="platform">🪟 Windows (64-bit)</div>
+            <a class="download-button" href="https://github.com/halilozercan/whatsbotg-site/releases/latest/download/whatsbotg.exe">
+                whatsbotg.exe İndir
+            </a>
+            <a class="secondary-link" href="https://github.com/halilozercan/whatsbotg-site/releases">
+                Tüm sürüm geçmişini gör →
+            </a>
+        </div>
+
+        <h2>Nasıl Çalıştırılır?</h2>
+        <p>İndirdiğiniz <code>whatsbotg.exe</code> dosyasını istediğiniz bir klasöre koyun ve komut istemcisinden (cmd/PowerShell) çalıştırın.</p>
+        <p>REST API modunda çalıştırmak için:</p>
+        <pre><code>whatsbotg.exe rest</code></pre>
+        <p>MCP (Model Context Protocol) sunucusu olarak çalıştırmak için:</p>
+        <pre><code>whatsbotg.exe mcp</code></pre>
+        <div class="note">
+            Not: Aynı anda hem REST hem de MCP modunda çalıştıramazsınız, ikisinden birini seçmeniz gerekir.
+            Ayrıca medya işlemleri için FFmpeg'in sisteminizde kurulu olması gerekir.
+        </div>
+
+        <h2>Sonraki Adım</h2>
+        <p>Kurulumdan sonra tüm uç noktaları (endpoint) ve kullanım örneklerini görmek için <a href="kilavuz.html">API Kılavuzu</a>'na göz atabilirsiniz.</p>
+    </div>
+
+    <footer>
+        <p><a href="index.html">Ana Sayfa</a> &middot; <a href="kilavuz.html">Dokümantasyon</a></p>
+    </footer>
+</body>
+</html>

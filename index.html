@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsbotg — Aradığınız WhatsApp Entegrasyonu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --muted-text-color: #a0a0a0;
+            --primary-color: #007bff;
+            --secondary-color: #28a745;
+            --natural-turquoise-color: #40E0D0;
+            --button-bg: #333;
+            --button-hover-bg: #555;
+            --card-bg: #232323;
+            --border-color: #444;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 90px 20px 70px;
+            background: radial-gradient(circle at top, #242424, #1a1a1a 70%);
+        }
+
+        h1 {
+            font-size: 3.2em;
+            margin: 0 0 20px;
+            color: var(--secondary-color);
+            text-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+            letter-spacing: -1px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .subtext {
+            max-width: 650px;
+            color: var(--muted-text-color);
+            margin-bottom: 40px;
+            font-size: 1.05em;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 30px;
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            font-weight: 600;
+            font-size: 1.1em;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .links a:hover {
+            background-color: var(--button-hover-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .links a.primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .links a.primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.6);
+        }
+
+        section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        h2 {
+            font-size: 2em;
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 45px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-card .icon {
+            font-size: 1.8em;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 10px;
+            font-size: 1.15em;
+            color: var(--natural-turquoise-color);
+        }
+
+        .feature-card p {
+            margin: 0;
+            color: var(--muted-text-color);
+            font-size: 0.95em;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery figure {
+            margin: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .gallery img {
+            width: 100%;
+            display: block;
+        }
+
+        .gallery figcaption {
+            padding: 12px 16px;
+            font-size: 0.9em;
+            color: var(--muted-text-color);
+            text-align: center;
+        }
+
+        .cta-band {
+            text-align: center;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 70px 20px;
+        }
+
+        .cta-band h2 { margin-bottom: 20px; }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px 50px;
+            color: var(--muted-text-color);
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: var(--natural-turquoise-color);
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.3em; }
+            .links a { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Whatsbotg <span style="color: var(--natural-turquoise-color); font-size: 0.6em;">by Turquoise</span></h1>
+        <p class="tagline">Aradığınız WhatsApp Entegrasyonu</p>
+        <p class="subtext">
+            WhatsApp Web protokolü üzerinden çalışan, Go ile yazılmış hafif ve hızlı bir
+            entegrasyon aracı. Basit bir REST API veya AI ajanlarıyla doğrudan konuşabilen
+            MCP (Model Context Protocol) sunucusu olarak çalıştırabilir; mesaj, medya ve
+            grup yönetimini tek bir yerden otomatikleştirebilirsiniz.
+        </p>
+        <div class="links">
+            <a class="primary" href="downloads.html">İndir</a>
+            <a href="kilavuz.html">Dokümantasyon</a>
+        </div>
+    </div>
+
+    <section>
+        <h2>Neler Yapabilirsiniz?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="icon">💬</div>
+                <h3>Zengin Mesaj Gönderimi</h3>
+                <p>Metin, resim, video, ses, dosya, sticker, konum, kişi kartı, bağlantı ve anket mesajlarını tek bir API ile gönderin.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🤖</div>
+                <h3>MCP Sunucu Desteği</h3>
+                <p>Model Context Protocol üzerinden AI ajanlarınızı doğrudan WhatsApp'a bağlayın; standart araç çağrılarıyla entegre olun.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">👥</div>
+                <h3>Grup Yönetimi</h3>
+                <p>Grup oluşturma, üye ekleme/çıkarma, yönetici atama, katılma isteklerini onaylama ve davet bağlantısı yönetimi.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🪄</div>
+                <h3>Otomatik Sticker Dönüştürme</h3>
+                <p>JPG, PNG, WebP ve GIF görsellerini otomatik olarak WebP sticker formatına çevirir, şeffaflığı korur.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📦</div>
+                <h3>Resim ve Video Sıkıştırma</h3>
+                <p>Gönderim öncesi medya dosyalarını otomatik olarak sıkıştırarak veri kullanımını azaltır.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔔</div>
+                <h3>Webhook Desteği</h3>
+                <p>Gelen mesajları HMAC imzalı webhook'lar ile kendi sisteminize anlık olarak iletin.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📱</div>
+                <h3>Çoklu Cihaz Desteği</h3>
+                <p>WhatsApp'ın çoklu cihaz mimarisiyle tam uyumlu; telefon bağlantısı kesintiye uğramadan çalışır.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔒</div>
+                <h3>Basic Auth &amp; Güvenlik</h3>
+                <p>Birden fazla kullanıcı adı/şifre kombinasyonuyla API erişimini koruyun.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Ekran Görüntüleri</h2>
+        <div class="gallery">
+            <figure>
+                <img src="gallery/homepage.png" alt="Whatsbotg ana ekranı">
+                <figcaption>Web arayüzü ana ekranı</figcaption>
+            </figure>
+            <figure>
+                <img src="gallery/send-message.png" alt="Mesaj gönderme ekranı">
+                <figcaption>Metin mesajı gönderme</figcaption>
+            </figure>
+            <figure>
+                <img src="gallery/send-image.png" alt="Resim gönderme ekranı">
+                <figcaption>Resim gönderme</figcaption>
+            </figure>
+            <figure>
+                <img src="gallery/group-list.png" alt="Grup listesi ekranı">
+                <figcaption>Grup listesi</figcaption>
+            </figure>
+            <figure>
+                <img src="gallery/group-manage-participant.png" alt="Grup üyesi yönetimi ekranı">
+                <figcaption>Grup üyesi yönetimi</figcaption>
+            </figure>
+            <figure>
+                <img src="gallery/business-profile.png" alt="İşletme profili ekranı">
+                <figcaption>İşletme profili görüntüleme</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <div class="cta-band">
+        <h2>Hemen Başlayın</h2>
+        <div class="links">
+            <a class="primary" href="downloads.html">Windows için İndir</a>
+            <a href="kilavuz.html">API Kılavuzunu İncele</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>Whatsbotg by Turquoise &middot; <a href="kilavuz.html">Dokümantasyon</a> &middot; <a href="downloads.html">İndirmeler</a></p>
+    </footer>
+</body>
+</html>

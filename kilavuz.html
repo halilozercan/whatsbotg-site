@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsbotg API Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --primary-color: #007bff;
+            --secondary-color: #28a745;
+            --code-bg: #2a2a2a;
+            --border-color: #444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px;
+            line-height: 1.6;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--primary-color);
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+        h2 {
+            font-size: 2em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+        h3 {
+            font-size: 1.5em;
+        }
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1em;
+        }
+        code {
+            font-family: "Fira Code", "Courier New", Courier, monospace;
+            background-color: var(--code-bg);
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: var(--text-color);
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 2em 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Whatsbotg API Kılavuzu</h1>
+<p>Bu doküman, WhatsApp API'sinin sunduğu endpoint'leri (servis noktalarını) ve işlevlerini basit bir dille açıklamaktadır.</p>
+<h2>Uygulama (App)</h2>
+<p>Uygulamanın WhatsApp sunucularıyla olan temel bağlantı ve kimlik doğrulama işlemlerini yönetir.</p>
+<h3><code>GET /app/login</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> WhatsApp sunucusuna giriş yapmak için kullanılır. Bu endpoint, telefonunuzdaki WhatsApp uygulamasıyla taramanız gereken bir QR kodu oluşturur.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/app/login
+</code></pre></li>
+</ul>
+<h3><code>GET /app/login-with-code</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen telefon numarası için bir eşleştirme kodu oluşturarak giriş yapmanızı sağlar. QR koduna bir alternatiftir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>phone</code> (query): Ülke koduyla birlikte telefon numaranız (Örn: <code>905xxxxxxxxx</code>).</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/app/login-with-code?phone=905xxxxxxxxx"
+</code></pre></li>
+</ul>
+<h3><code>GET /app/logout</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Mevcut WhatsApp oturumunu sonlandırır ve ilgili veritabanı dosyalarını siler.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/app/logout
+</code></pre></li>
+</ul>
+<h3><code>GET /app/reconnect</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> WhatsApp sunucusuyla kopan bağlantıyı yeniden kurmaya çalışır.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/app/reconnect
+</code></pre></li>
+</ul>
+<h3><code>GET /app/devices</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Hesabınıza bağlı olan tüm cihazların bir listesini getirir.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/app/devices
+</code></pre></li>
+</ul>
+<h3><code>GET /app/status</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> WhatsApp sunucusuyla olan bağlantının anlık durumunu getirir.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/app/status
+</code></pre></li>
+</ul>
+<hr>
+<h2>Kullanıcı (User)</h2>
+<p>Kullanıcı bilgileri, profil ayarları ve kişi listesi gibi işlemleri yönetir.</p>
+<h3><code>GET /user/info</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen telefon numarasına sahip bir kullanıcının herkese açık profil bilgilerini (isim, durum, profil fotoğrafı ID'si vb.) getirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>phone</code> (query): Bilgisi alınacak kullanıcının WhatsApp ID'si (Örn: <code>905xxxxxxxxx@s.whatsapp.net</code>).</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/user/info?phone=905xxxxxxxxx@s.whatsapp.net"
+</code></pre></li>
+</ul>
+<h3><code>GET /user/avatar</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir kullanıcının profil fotoğrafını (avatar) getirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>phone</code> (query): Avatarı alınacak kullanıcının WhatsApp ID'si.</li>
+<li><code>is_preview</code> (query, opsiyonel): <code>true</code> ise fotoğrafın küçük bir önizlemesini getirir.</li>
+<li><code>is_community</code> (query, opsiyonel): <code>true</code> ise topluluk avatarını getirir.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/user/avatar?phone=905xxxxxxxxx@s.whatsapp.net&amp;is_preview=true"
+</code></pre></li>
+</ul>
+<h3><code>POST /user/avatar</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Kendi profil fotoğrafınızı değiştirir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>avatar</code> (form-data): Yüklenecek yeni profil fotoğrafı dosyası.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/user/avatar \
+    -H "Content-Type: multipart/form-data" \
+    -F "avatar=@/path/to/your/image.jpg"
+</code></pre></li>
+</ul>
+<h3><code>POST /user/pushname</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> WhatsApp'ta başkalarına görünen isminizi (push name) günceller.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>push_name</code> (json): Ayarlamak istediğiniz yeni isim.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/user/pushname \
+    -H "Content-Type: application/json" \
+    -d '{"push_name": "Yeni Isim"}'
+</code></pre></li>
+</ul>
+<h3><code>GET /user/my/privacy</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Kendi gizlilik ayarlarınızı (son görülme, profil fotoğrafı, durum vb.) getirir.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/user/my/privacy
+</code></pre></li>
+</ul>
+<h3><code>GET /user/my/groups</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Üyesi olduğunuz tüm grupların listesini getirir.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/user/my/groups
+</code></pre></li>
+</ul>
+<h3><code>GET /user/my/newsletters</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Takip ettiğiniz tüm haber bültenlerinin listesini getirir.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/user/my/newsletters
+</code></pre></li>
+</ul>
+<h3><code>GET /user/my/contacts</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Kayıtlı kişi listenizi getirir.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/user/my/contacts
+</code></pre></li>
+</ul>
+<h3><code>GET /user/check</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen telefon numarasının bir WhatsApp hesabına sahip olup olmadığını kontrol eder.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>phone</code> (query): Kontrol edilecek telefon numarası.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/user/check?phone=905xxxxxxxxx"
+</code></pre></li>
+</ul>
+<h3><code>GET /user/business-profile</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen telefon numarasına ait işletme profili bilgilerini getirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>phone</code> (query): Bilgisi alınacak işletme hesabının WhatsApp ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/user/business-profile?phone=905xxxxxxxxx@s.whatsapp.net"
+</code></pre></li>
+</ul>
+<hr>
+<h2>Sohbet (Chat)</h2>
+<p>Sohbet listesini ve sohbet geçmişini yönetmek için kullanılır.</p>
+<h3><code>GET /chats</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Tüm sohbetlerinizin listesini getirir.</li>
+<li><strong>Parametreler:</strong> Yok.</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET http://localhost:3000/chats
+</code></pre></li>
+</ul>
+<h3><code>GET /chat/{chat_jid}/messages</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen sohbetteki mesaj geçmişini getirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>chat_jid</code> (path): Mesajları alınacak sohbetin WhatsApp ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/chat/905xxxxxxxxx@s.whatsapp.net/messages"
+</code></pre></li>
+</ul>
+<h3><code>POST /chat/{chat_jid}/pin</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen sohbeti sabitler veya sabitlemeyi kaldırır.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>chat_jid</code> (path): Sabitlenecek/sabitlemesi kaldırılacak sohbetin WhatsApp ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST "http://localhost:3000/chat/905xxxxxxxxx@s.whatsapp.net/pin"
+</code></pre></li>
+</ul>
+<hr>
+<h2>Mesaj Gönderme (Send)</h2>
+<p>Farklı türlerde (metin, resim, video, dosya vb.) mesaj gönderme işlemlerini gerçekleştirir.</p>
+<h3><code>POST /send/message</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Metin mesajı gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Mesajın gönderileceği alıcının WhatsApp ID'si.</li>
+<li><code>message</code> (json): Gönderilecek metin içeriği.</li>
+<li><code>reply_message_id</code> (json, opsiyonel): Yanıtlamak istediğiniz mesajın ID'si.</li>
+<li><code>is_forwarded</code> (json, opsiyonel): Mesajın iletilmiş olarak işaretlenip işaretlenmeyeceği.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/message \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net","message": "Merhaba, bu bir test mesajıdır."}'
+</code></pre></li>
+</ul>
+<h3><code>POST /send/image</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Resim mesajı gönderir. Resim, dosya olarak veya bir URL üzerinden gönderilebilir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (form-data): Alıcının WhatsApp ID'si.</li>
+<li><code>caption</code> (form-data, opsiyonel): Resim altı yazısı.</li>
+<li><code>view_once</code> (form-data, opsiyonel): <code>true</code> ise resim tek seferlik görüntülenir.</li>
+<li><code>image</code> (form-data): Gönderilecek resim dosyası.</li>
+<li><code>image_url</code> (form-data): Gönderilecek resmin URL'si.</li>
+<li><code>compress</code> (form-data, opsiyonel): <code>true</code> ise resim sıkıştırılır.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/image \
+    -H "Content-Type: multipart/form-data" \
+    -F "phone=905xxxxxxxxx@s.whatsapp.net" \
+    -F "caption=Resim altı yazısı" \
+    -F "image=@/path/to/your/image.jpg"
+</code></pre></li>
+</ul>
+<h3><code>POST /send/sticker</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Sticker mesajı gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (form-data): Alıcının WhatsApp ID'si.</li>
+<li><code>sticker</code> (form-data): Gönderilecek sticker dosyası.</li>
+<li><code>sticker_url</code> (form-data): Gönderilecek stickerın URL'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/sticker \
+    -H "Content-Type: multipart/form-data" \
+    -F "phone=905xxxxxxxxx@s.whatsapp.net" \
+    -F "sticker=@/path/to/your/sticker.webp"
+</code></pre></li>
+</ul>
+<h3><code>POST /send/audio</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Ses dosyası (örn: OGG) gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (form-data): Alıcının WhatsApp ID'si.</li>
+<li><code>audio</code> (form-data): Gönderilecek ses dosyası.</li>
+<li><code>audio_url</code> (form-data): Gönderilecek ses dosyasının URL'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/audio \
+    -H "Content-Type: multipart/form-data" \
+    -F "phone=905xxxxxxxxx@s.whatsapp.net" \
+    -F "audio=@/path/to/your/audio.ogg"
+</code></pre></li>
+</ul>
+<h3><code>POST /send/file</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belge veya dosya (PDF, DOCX vb.) gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (form-data): Alıcının WhatsApp ID'si.</li>
+<li><code>caption</code> (form-data, opsiyonel): Dosya altı yazısı.</li>
+<li><code>file</code> (form-data): Gönderilecek dosya.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/file \
+    -H "Content-Type: multipart/form-data" \
+    -F "phone=905xxxxxxxxx@s.whatsapp.net" \
+    -F "caption=Dosya açıklaması" \
+    -F "file=@/path/to/your/document.pdf"
+</code></pre></li>
+</ul>
+<h3><code>POST /send/video</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Video mesajı gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (form-data): Alıcının WhatsApp ID'si.</li>
+<li><code>caption</code> (form-data, opsiyonel): Video altı yazısı.</li>
+<li><code>view_once</code> (form-data, opsiyonel): <code>true</code> ise video tek seferlik görüntülenir.</li>
+<li><code>video</code> (form-data): Gönderilecek video dosyası.</li>
+<li><code>video_url</code> (form-data): Gönderilecek videonun URL'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/video \
+    -H "Content-Type: multipart/form-data" \
+    -F "phone=905xxxxxxxxx@s.whatsapp.net" \
+    -F "caption=Video açıklaması" \
+    -F "video=@/path/to/your/video.mp4"
+</code></pre></li>
+</ul>
+<h3><code>POST /send/contact</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Kişi kartı gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Alıcının WhatsApp ID'si.</li>
+<li><code>contact_name</code> (json): Gönderilecek kişinin adı.</li>
+<li><code>contact_phone</code> (json): Gönderilecek kişinin telefon numarası.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/contact \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net","contact_name": "Ahmet Yılmaz","contact_phone": "905xxxxxxxxx"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /send/link</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Tıklanabilir bir bağlantı (link) gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Alıcının WhatsApp ID'si.</li>
+<li><code>link</code> (json): Gönderilecek URL.</li>
+<li><code>caption</code> (json, opsiyonel): Bağlantı açıklaması.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/link \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net","link": "https://www.google.com","caption": "Google\'a bir göz atın!"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /send/location</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Konum bilgisi gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Alıcının WhatsApp ID'si.</li>
+<li><code>latitude</code> (json): Enlem koordinatı.</li>
+<li><code>longitude</code> (json): Boylam koordinatı.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/location \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net","latitude": "41.0082","longitude": "28.9784"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /send/poll</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Anket (oylama) gönderir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Alıcının WhatsApp ID'si.</li>
+<li><code>question</code> (json): Anket sorusu.</li>
+<li><code>options</code> (json): Anket seçeneklerini içeren bir dizi (array).</li>
+<li><code>max_answer</code> (json): Verilebilecek maksimum cevap sayısı.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/poll \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net","question": "En sevdiğiniz renk hangisi?","options": ["Mavi", "Yeşil", "Kırmızı"],"max_answer": 1}'
+</code></pre></li>
+</ul>
+<h3><code>POST /send/presence</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Varlık durumunuzu (çevrimiçi/çevrimdışı) ayarlar.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>type</code> (json): Durum tipi (<code>available</code> veya <code>unavailable</code>).</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/presence \
+    -H "Content-Type: application/json" \
+    -d '{"type": "available"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /send/chat-presence</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir sohbette yazıyor/kaydediyor gibi anlık durumunuzu ayarlar.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): İşlemin yapılacağı sohbetin WhatsApp ID'si.</li>
+<li><code>type</code> (json): Durum tipi (<code>composing</code> veya <code>paused</code>).</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/send/chat-presence \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net","type": "composing"}'
+</code></pre></li>
+</ul>
+<hr>
+<h2>Mesaj Yönetimi (Message)</h2>
+<p>Gönderilmiş mesajlar üzerinde işlem yapmayı sağlar (silme, düzenleme, tepki verme vb.).</p>
+<h3><code>POST /message/{message_id}/revoke</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Gönderdiğiniz bir mesajı herkesten siler (geri alır).</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>message_id</code> (path): Silinecek mesajın ID'si.</li>
+</ul>
+</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Mesajın gönderildiği sohbetin ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/message/MESSAGE_ID/revoke \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /message/{message_id}/delete</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Gönderdiğiniz bir mesajı sadece kendinizden siler.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>message_id</code> (path): Silinecek mesajın ID'si.</li>
+</ul>
+</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Mesajın gönderildiği sohbetin ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/message/MESSAGE_ID/delete \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /message/{message_id}/reaction</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir mesaja emoji ile tepki verir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>message_id</code> (path): Tepki verilecek mesajın ID'si.</li>
+</ul>
+</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Mesajın gönderildiği sohbetin ID'si.</li>
+<li><code>emoji</code> (json): Gönderilecek emoji.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/message/MESSAGE_id/reaction \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net","emoji": "👍"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /message/{message_id}/update</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Gönderildikten sonraki 15 dakika içinde bir metin mesajını düzenler.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>message_id</code> (path): Düzenlenecek mesajın ID'si.</li>
+</ul>
+</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Mesajın gönderildiği sohbetin ID'si.</li>
+<li><code>message</code> (json): Mesajın yeni metni.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/message/MESSAGE_ID/update \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net","message": "Düzenlenmiş mesaj içeriği."}'
+</code></pre></li>
+</ul>
+<h3><code>POST /message/{message_id}/read</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir mesajı okundu olarak işaretler.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>message_id</code> (path): Okundu olarak işaretlenecek mesajın ID'si.</li>
+</ul>
+</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Mesajın gönderildiği sohbetin ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/message/MESSAGE_ID/read \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /message/{message_id}/star</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir mesajı yıldızlar.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>message_id</code> (path): Yıldızlanacak mesajın ID'si.</li>
+</ul>
+</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Mesajın gönderildiği sohbetin ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/message/MESSAGE_ID/star \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /message/{message_id}/unstar</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir mesajın yıldızını kaldırır.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>message_id</code> (path): Yıldızı kaldırılacak mesajın ID'si.</li>
+</ul>
+</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>phone</code> (json): Mesajın gönderildiği sohbetin ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/message/MESSAGE_ID/unstar \
+    -H "Content-Type: application/json" \
+    -d '{"phone": "905xxxxxxxxx@s.whatsapp.net"}'
+</code></pre></li>
+</ul>
+<h3><code>GET /message/{message_id}/download</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir mesaja ait medya dosyasını indirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>message_id</code> (path): Medyası indirilecek mesajın ID'si.</li>
+<li><code>phone</code> (query): Mesajın gönderildiği sohbetin ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/message/MESSAGE_ID/download?phone=905xxxxxxxxx@s.whatsapp.net"
+</code></pre></li>
+</ul>
+<hr>
+<h2>Grup (Group)</h2>
+<p>WhatsApp gruplarını yönetmek için kullanılır (grup oluşturma, üye ekleme/çıkarma vb.).</p>
+<h3><code>POST /group</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Yeni bir grup oluşturur ve başlangıç üyelerini ekler.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>title</code> (json): Grubun başlığı.</li>
+<li><code>participants</code> (json): Gruba eklenecek üyelerin telefon numaralarını içeren dizi.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group \
+    -H "Content-Type: application/json" \
+    -d '{"title": "Yeni Grup","participants": ["905xxxxxxxxx", "905yyyyyyyyy"]}'
+</code></pre></li>
+</ul>
+<h3><code>GET /group/info</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen grubun bilgilerini getirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>group_id</code> (query): Bilgisi alınacak grubun ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/group/info?group_id=GROUP_ID@g.us"
+</code></pre></li>
+</ul>
+<h3><code>GET /group/info-from-link</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir davet bağlantısından grup bilgilerini getirir (gruba katılmadan).</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>link</code> (query): Bilgisi alınacak grubun davet bağlantısı.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/group/info-from-link?link=https://chat.whatsapp.com/INVITE_LINK"
+</code></pre></li>
+</ul>
+<h3><code>GET /group/participants</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir grubun üye listesini getirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>group_id</code> (query): Üyeleri listelenecek grubun ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/group/participants?group_id=GROUP_ID@g.us"
+</code></pre></li>
+</ul>
+<h3><code>GET /group/participants/export</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir grubun üye listesini dışa aktarır.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>group_id</code> (query): Üyeleri dışa aktarılacak grubun ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/group/participants/export?group_id=GROUP_ID@g.us"
+</code></pre></li>
+</ul>
+<h3><code>POST /group/participants</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Mevcut bir gruba yeni üyeler ekler.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>participants</code> (json): Eklenecek üyelerin telefon numaraları.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/participants \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","participants": ["905zzzzzzzzz"]}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/participants/remove</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir gruptan üyeleri çıkarır.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>participants</code> (json): Çıkarılacak üyelerin telefon numaraları.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/participants/remove \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","participants": ["905zzzzzzzzz"]}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/participants/promote</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir grup üyesini yönetici yapar.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>participants</code> (json): Yönetici yapılacak üyelerin telefon numaraları.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/participants/promote \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","participants": ["905yyyyyyyyy"]}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/participants/demote</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir grup yöneticisini normal üyeye düşürür.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>participants</code> (json): Yetkisi alınacak yöneticilerin telefon numaraları.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/participants/demote \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","participants": ["905yyyyyyyyy"]}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/join-with-link</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir davet bağlantısı kullanarak gruba katılır.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>link</code> (json): Katılınacak grubun davet bağlantısı.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/join-with-link \
+    -H "Content-Type: application/json" \
+    -d '{"link": "https://chat.whatsapp.com/INVITE_LINK"}'
+</code></pre></li>
+</ul>
+<h3><code>GET /group/participant-requests</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Bir gruba katılma isteği gönderenlerin listesini getirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>group_id</code> (query): İstekleri listelenecek grubun ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/group/participant-requests?group_id=GROUP_ID@g.us"
+</code></pre></li>
+</ul>
+<h3><code>POST /group/participant-requests/approve</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Gruba katılma isteklerini onaylar.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>participants</code> (json): Katılma isteği onaylanacak kişilerin ID'leri.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/participant-requests/approve \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","participants": ["905zzzzzzzzz"]}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/participant-requests/reject</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Gruba katılma isteklerini reddeder.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>participants</code> (json): Katılma isteği reddedilecek kişilerin ID'leri.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/participant-requests/reject \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","participants": ["905zzzzzzzzz"]}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/leave</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen gruptan ayrılır.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): Ayrılınacak grubun ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/leave \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/photo</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Grubun profil fotoğrafını değiştirir. Fotoğraf gönderilmezse mevcut fotoğraf kaldırılır.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (form-data): İşlem yapılacak grubun ID'si.</li>
+<li><code>photo</code> (form-data, opsiyonel): Yüklenecek yeni grup fotoğrafı dosyası.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/photo \
+    -H "Content-Type: multipart/form-data" \
+    -F "group_id=GROUP_ID@g.us" \
+    -F "photo=@/path/to/your/image.jpg"
+</code></pre></li>
+</ul>
+<h3><code>POST /group/name</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Grubun adını değiştirir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>name</code> (json): Grubun yeni adı.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/name \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","name": "Yeni Grup Adı"}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/locked</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Grup ayarlarını sadece yöneticilerin değiştirebileceği şekilde kilitler veya kilidi açar.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>locked</code> (json): <code>true</code> ise sadece yöneticiler grup ayarlarını değiştirebilir.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/locked \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","locked": true}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/announce</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Grubu sadece yöneticilerin mesaj gönderebileceği duyuru moduna alır veya çıkarır.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>announce</code> (json): <code>true</code> ise sadece yöneticiler mesaj gönderebilir.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/announce \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","announce": true}'
+</code></pre></li>
+</ul>
+<h3><code>POST /group/topic</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Grubun konusunu (açıklamasını) değiştirir.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>group_id</code> (json): İşlem yapılacak grubun ID'si.</li>
+<li><code>topic</code> (json): Grubun yeni konusu.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/group/topic \
+    -H "Content-Type: application/json" \
+    -d '{"group_id": "GROUP_ID@g.us","topic": "Yeni grup konusu."}'
+</code></pre></li>
+</ul>
+<h3><code>GET /group/invite-link</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Grubun davet bağlantısını getirir.</li>
+<li><strong>Parametreler:</strong>
+<ul>
+<li><code>group_id</code> (query): Davet bağlantısı alınacak grubun ID'si.</li>
+<li><code>reset</code> (query, opsiyonel): <code>true</code> ise mevcut davet bağlantısını iptal edip yenisini oluşturur.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X GET "http://localhost:3000/group/invite-link?group_id=GROUP_ID@g.us"
+</code></pre></li>
+</ul>
+<hr>
+<h2>Haber Bülteni (Newsletter)</h2>
+<p>Haber bültenlerini yönetmek için kullanılır.</p>
+<h3><code>POST /newsletter/unfollow</code></h3>
+<ul>
+<li><strong>Açıklama:</strong> Belirtilen haber bültenini takipten çıkar.</li>
+<li><strong>Request Body:</strong>
+<ul>
+<li><code>newsletter_id</code> (json): Takipten çıkılacak haber bülteninin ID'si.</li>
+</ul>
+</li>
+<li><strong>Örnek İstek:</strong>
+<pre><code>curl -X POST http://localhost:3000/newsletter/unfollow \
+    -H "Content-Type: application/json" \
+    -d '{"newsletter_id": "NEWSLETTER_ID@newsletter"}'
+</code></pre></li>
+</ul>
