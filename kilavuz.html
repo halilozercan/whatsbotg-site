@@ -75,9 +75,22 @@
             border-top: 1px solid var(--border-color);
             margin: 2em 0;
         }
+        nav.top-nav {
+            max-width: 800px;
+            margin: 0 auto 1.5em;
+            display: flex;
+            gap: 20px;
+        }
+        nav.top-nav a {
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
+    <nav class="top-nav">
+        <a href="index.html">← Ana Sayfa</a>
+        <a href="downloads.html">İndir</a>
+    </nav>
     <h1>Whatsbotg API Kılavuzu</h1>
 <p>Bu doküman, WhatsApp API'sinin sunduğu endpoint'leri (servis noktalarını) ve işlevlerini basit bir dille açıklamaktadır.</p>
 <h2>Uygulama (App)</h2>

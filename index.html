@@ -15,7 +15,6 @@
             --natural-turquoise-color: #40E0D0;
             --button-bg: #333;
             --button-hover-bg: #555;
-            --card-bg: #232323;
             --border-color: #444;
         }
 
@@ -24,18 +23,22 @@
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             line-height: 1.6;
             background-color: var(--background-color);
             color: var(--text-color);
         }
 
         .hero {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 90px 20px 70px;
+            padding: 40px 20px;
             background: radial-gradient(circle at top, #242424, #1a1a1a 70%);
         }
 
@@ -104,88 +107,9 @@
             box-shadow: 0 8px 25px rgba(0, 123, 255, 0.6);
         }
 
-        section {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-
-        h2 {
-            font-size: 2em;
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 45px;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-        }
-
-        .feature-card .icon {
-            font-size: 1.8em;
-            margin-bottom: 12px;
-        }
-
-        .feature-card h3 {
-            margin: 0 0 10px;
-            font-size: 1.15em;
-            color: var(--natural-turquoise-color);
-        }
-
-        .feature-card p {
-            margin: 0;
-            color: var(--muted-text-color);
-            font-size: 0.95em;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .gallery figure {
-            margin: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .gallery img {
-            width: 100%;
-            display: block;
-        }
-
-        .gallery figcaption {
-            padding: 12px 16px;
-            font-size: 0.9em;
-            color: var(--muted-text-color);
-            text-align: center;
-        }
-
-        .cta-band {
-            text-align: center;
-            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 70px 20px;
-        }
-
-        .cta-band h2 { margin-bottom: 20px; }
-
         footer {
             text-align: center;
-            padding: 30px 20px 50px;
+            padding: 30px 20px;
             color: var(--muted-text-color);
             font-size: 0.9em;
         }
@@ -214,90 +138,6 @@
         <div class="links">
             <a class="primary" href="downloads.html">İndir</a>
             <a href="kilavuz.html">Dokümantasyon</a>
-        </div>
-    </div>
-
-    <section>
-        <h2>Neler Yapabilirsiniz?</h2>
-        <div class="features">
-            <div class="feature-card">
-                <div class="icon">💬</div>
-                <h3>Zengin Mesaj Gönderimi</h3>
-                <p>Metin, resim, video, ses, dosya, sticker, konum, kişi kartı, bağlantı ve anket mesajlarını tek bir API ile gönderin.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🤖</div>
-                <h3>MCP Sunucu Desteği</h3>
-                <p>Model Context Protocol üzerinden AI ajanlarınızı doğrudan WhatsApp'a bağlayın; standart araç çağrılarıyla entegre olun.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">👥</div>
-                <h3>Grup Yönetimi</h3>
-                <p>Grup oluşturma, üye ekleme/çıkarma, yönetici atama, katılma isteklerini onaylama ve davet bağlantısı yönetimi.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🪄</div>
-                <h3>Otomatik Sticker Dönüştürme</h3>
-                <p>JPG, PNG, WebP ve GIF görsellerini otomatik olarak WebP sticker formatına çevirir, şeffaflığı korur.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">📦</div>
-                <h3>Resim ve Video Sıkıştırma</h3>
-                <p>Gönderim öncesi medya dosyalarını otomatik olarak sıkıştırarak veri kullanımını azaltır.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🔔</div>
-                <h3>Webhook Desteği</h3>
-                <p>Gelen mesajları HMAC imzalı webhook'lar ile kendi sisteminize anlık olarak iletin.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">📱</div>
-                <h3>Çoklu Cihaz Desteği</h3>
-                <p>WhatsApp'ın çoklu cihaz mimarisiyle tam uyumlu; telefon bağlantısı kesintiye uğramadan çalışır.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🔒</div>
-                <h3>Basic Auth &amp; Güvenlik</h3>
-                <p>Birden fazla kullanıcı adı/şifre kombinasyonuyla API erişimini koruyun.</p>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <h2>Ekran Görüntüleri</h2>
-        <div class="gallery">
-            <figure>
-                <img src="gallery/homepage.png" alt="Whatsbotg ana ekranı">
-                <figcaption>Web arayüzü ana ekranı</figcaption>
-            </figure>
-            <figure>
-                <img src="gallery/send-message.png" alt="Mesaj gönderme ekranı">
-                <figcaption>Metin mesajı gönderme</figcaption>
-            </figure>
-            <figure>
-                <img src="gallery/send-image.png" alt="Resim gönderme ekranı">
-                <figcaption>Resim gönderme</figcaption>
-            </figure>
-            <figure>
-                <img src="gallery/group-list.png" alt="Grup listesi ekranı">
-                <figcaption>Grup listesi</figcaption>
-            </figure>
-            <figure>
-                <img src="gallery/group-manage-participant.png" alt="Grup üyesi yönetimi ekranı">
-                <figcaption>Grup üyesi yönetimi</figcaption>
-            </figure>
-            <figure>
-                <img src="gallery/business-profile.png" alt="İşletme profili ekranı">
-                <figcaption>İşletme profili görüntüleme</figcaption>
-            </figure>
-        </div>
-    </section>
-
-    <div class="cta-band">
-        <h2>Hemen Başlayın</h2>
-        <div class="links">
-            <a class="primary" href="downloads.html">Windows için İndir</a>
-            <a href="kilavuz.html">API Kılavuzunu İncele</a>
         </div>
     </div>
 
